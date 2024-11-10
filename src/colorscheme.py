@@ -6,7 +6,7 @@ from convert_path import convert_path
 
 def rgb_to_hex(rgb):
     # 色を16進数に変換
-    #return "#{:02x}:{02x}{:02x}".format(rgb)
+    # return "#{:02x}:{02x}{:02x}".format(rgb)
     return "#{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2])
 
 

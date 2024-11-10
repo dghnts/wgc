@@ -7,7 +7,7 @@ def extract_pallete(image_path, color_count=8):
     color_thief = ColorThief(image_path)
     palette = color_thief.get_palette(color_count=color_count)
     while len(palette) < color_count:
-        palette.append((0, 0, 0))
+        palette.append((255, 255, 255))
     return palette
 
 
