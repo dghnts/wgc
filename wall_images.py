@@ -1,21 +1,26 @@
 import json
 import os
+import sys
+import subprocess
 from dotenv import load_dotenv
 
 # 環境変数の読み込み
 load_dotenv()
 
-# 背景画像のパスを取得する
-
 
 def get_settings_path():
-    windows_terminal_path = os.getenv("WINDOWSTERMINAL")
+    '''
+    背景画像のパスを取得する
+    '''
+    settings_path = os.getenv("WINDOWSTERMINALSETTINGS")
 
-    if not windows_terminal_path:
-        raise EnvironmentError("環境変数 WINDOWSTREMINAL が見つかりません")
+    if not settings_path:
+        raise EnvironmentError("環境変数 WINDOWSTERMINAL が見つかりません")
 
-    settings_path = os.path.join(windows_terminal_path, "settings.json")
-
+    # settings_path = os.path.join(settings_path, "settings.json")
+    if sys.platform == "linux":
+        settings_path = subprocess.check_output(["wslpath", settings_path]) \
+                                                 .strip()
     return settings_path
 
 
@@ -44,7 +49,7 @@ def get_background_images(settings_path):
 if __name__ == "__main__":
     try:
         settings_path = get_settings_path()
-        print(settings_path)
+        #print(repr(settings_path))
         images = get_background_images(settings_path)
         for profile_name, image_path in images.items():
             print(f"Profile: {profile_name}, Background Image: {image_path}")
