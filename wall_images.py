@@ -3,6 +3,7 @@ import os
 import sys
 import subprocess
 from dotenv import load_dotenv
+from convert_path import convert_path
 
 # 環境変数の読み込み
 load_dotenv()
@@ -18,9 +19,7 @@ def get_settings_path():
         raise EnvironmentError("環境変数 WINDOWSTERMINAL が見つかりません")
 
     # settings_path = os.path.join(settings_path, "settings.json")
-    if sys.platform == "linux":
-        settings_path = subprocess.check_output(["wslpath", settings_path]) \
-                                                 .strip()
+    settings_path = convert_path(settings_path)
     return settings_path
 
 
