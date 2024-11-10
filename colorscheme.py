@@ -47,7 +47,7 @@ def choose_contrasting_color(background_rgb, palette, threshold=4.5):
     return palette[1]
 
 
-def generate_color_scheme(palette):
+def generate_color_scheme(palette, schemename):
     """
     カラーパレットからカラースキームを生成
     """
@@ -55,7 +55,7 @@ def generate_color_scheme(palette):
     foreground = choose_contrasting_color(background, palette)
 
     return {
-        "name": "WCAGDynamicScheme",
+        "name": schemename,
         "background": rgb_to_hex(background),
         "foreground": rgb_to_hex(foreground),
         "black": rgb_to_hex(palette[0]),
@@ -81,10 +81,9 @@ def update_settings_f(settings_path, scheme, schemename):
     try:
         with open(settings_path, "r", encoding="utf-8") as f:
             settings = json.load(f)
-
+            f.close()
         if "schemes" not in settings:
             settings["schemes"] = []
-
         # 既に登録済みのカラースキームを追加
         settings["schemes"] = [s for s in settings["schemes"]
                                if s["name"] != schemename]
@@ -107,8 +106,8 @@ if __name__ == "__main__":
     for profile_name, image_path in image_paths.items():
         image_path = convert_path(image_path)
         palette = analysis_color.extract_pallete(image_path)
-        scheme = generate_color_scheme(palette)
         schemename = profile_name + "scheme"
+        scheme = generate_color_scheme(palette, schemename)
         update_settings_f(settings_path, scheme, schemename)
     else:
         print(f"画像が見つかりません: {image_path}")
